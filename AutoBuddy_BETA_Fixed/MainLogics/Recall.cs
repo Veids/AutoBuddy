@@ -90,12 +90,12 @@ AutoBuddy won't recall if you have less gold than needed for next item.
 
                 if (victim != null)
                 {
-                    Chat.Print("Debug: Victim found in range -> recal ");
+                    //Chat.Print("Debug: Victim found in range -> recal ");
                     current.SetLogic(LogicSelector.MainLogics.RecallLogic);
                     Core.DelayAction(ShouldRecall, 500);
                     return;
                 }
-                Chat.Print("Debug: Victim not found in range -> push");
+                //Chat.Print("Debug: Victim not found in range -> push");
             }
 
            /* if ((AutoWalker.p.Gold > flatGold.CurrentValue+AutoWalker.p.Level*goldPerLevel.CurrentValue&&AutoWalker.p.Gold>ShopGlobals.GoldForNextItem && AutoWalker.p.InventoryItems.Length < 8 &&

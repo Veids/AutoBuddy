@@ -39,3 +39,8 @@ C:\Users\Jonathan\Documents\GitHub\AutoBuddy\AutoBuddy_BETA_Fixed\obj\Debug\Auto
 C:\Users\veids\Documents\Visual Studio 2015\Projects\AutoBuddy\AutoBuddy\AutoBuddy_BETA_Fixed\bin\Release\AutoBuddy.exe.config
 C:\Users\veids\Documents\Visual Studio 2015\Projects\AutoBuddy\AutoBuddy\AutoBuddy_BETA_Fixed\obj\Debug\AutoBuddy.exe
 C:\Users\veids\Documents\Visual Studio 2015\Projects\AutoBuddy\AutoBuddy\AutoBuddy_BETA_Fixed\obj\Debug\AutoBuddy.pdb
+C:\Users\veids\Documents\Visual Studio 2015\Projects\AutoBuddy\AutoBuddy\AutoBuddy_BETA_Fixed\bin\Release\AutoBuddy.exe
+C:\Users\veids\Documents\Visual Studio 2015\Projects\AutoBuddy\AutoBuddy\AutoBuddy_BETA_Fixed\bin\Release\AutoBuddy.pdb
+C:\Users\veids\Documents\Visual Studio 2015\Projects\AutoBuddy\AutoBuddy\AutoBuddy_BETA_Fixed\obj\Debug\AutoBuddy_BETA_Fixed.csprojResolveAssemblyReference.cache
+C:\Users\veids\Documents\Visual Studio 2015\Projects\AutoBuddy\AutoBuddy\AutoBuddy_BETA_Fixed\obj\Debug\AutoBuddy.Properties.Resources.resources
+C:\Users\veids\Documents\Visual Studio 2015\Projects\AutoBuddy\AutoBuddy\AutoBuddy_BETA_Fixed\obj\Debug\AutoBuddy_BETA_Fixed.csproj.GenerateResource.Cache
