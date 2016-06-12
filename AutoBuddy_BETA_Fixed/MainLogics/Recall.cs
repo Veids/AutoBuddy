@@ -65,14 +65,47 @@ AutoBuddy won't recall if you have less gold than needed for next item.
                 return;
             }
 
-            if ((AutoWalker.p.Gold > flatGold.CurrentValue+AutoWalker.p.Level*goldPerLevel.CurrentValue&&AutoWalker.p.Gold>ShopGlobals.GoldForNextItem && AutoWalker.p.InventoryItems.Length < 8 &&
+            //To many backs. Added little autistic push^^
+            if ((AutoWalker.p.Gold > 2000 && AutoWalker.p.Gold > ShopGlobals.GoldForNextItem && AutoWalker.p.InventoryItems.Length < 8 && recallsWithGold <= 30))
+            {
+                if (AutoWalker.p.Gold > (AutoWalker.p.Level + 2) * 150 && AutoWalker.p.InventoryItems.Length < 8 &&
+                     recallsWithGold <= 30)
+                    recallsWithGold++;
+
+                current.SetLogic(LogicSelector.MainLogics.RecallLogic);
+                Core.DelayAction(ShouldRecall, 500);
+                return;
+            }
+
+            if (AutoWalker.p.HealthPercent() < 30)
+            {
+                AIHeroClient victim = null;
+                victim = EntityManager.Heroes.Enemies.Where(
+                   vic => !vic.IsZombie &&
+                       vic.Distance(AutoWalker.p) < vic.BoundingRadius + AutoWalker.p.AttackRange + 450 &&
+                       vic.IsVisible() && vic.Health > 0 &&
+                       current.localAwareness.MyStrength() / current.localAwareness.HeroStrength(vic) < 1)
+                   .OrderBy(v => v.Health)
+                   .FirstOrDefault();
+
+                if (victim != null)
+                {
+                    Chat.Print("Debug: Victim found in range -> recal ");
+                    current.SetLogic(LogicSelector.MainLogics.RecallLogic);
+                    Core.DelayAction(ShouldRecall, 500);
+                    return;
+                }
+                Chat.Print("Debug: Victim not found in range -> push");
+            }
+
+           /* if ((AutoWalker.p.Gold > flatGold.CurrentValue+AutoWalker.p.Level*goldPerLevel.CurrentValue&&AutoWalker.p.Gold>ShopGlobals.GoldForNextItem && AutoWalker.p.InventoryItems.Length < 8 &&
                  recallsWithGold <= 30) || AutoWalker.p.HealthPercent() < 25)
             {
                 if (AutoWalker.p.Gold > (AutoWalker.p.Level + 2)*150 && AutoWalker.p.InventoryItems.Length < 8 &&
                     recallsWithGold <= 30)
                     recallsWithGold++;
                 current.SetLogic(LogicSelector.MainLogics.RecallLogic);
-            }
+            }*/
             Core.DelayAction(ShouldRecall, 500);
         }
 
