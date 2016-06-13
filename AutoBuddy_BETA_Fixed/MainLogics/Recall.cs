@@ -24,7 +24,7 @@ namespace AutoBuddy.MainLogics
         public Recall(LogicSelector currentLogic, Menu parMenu)
         {
             Menu menu = parMenu.AddSubMenu("Recall settings", "ergtrh");
-            flatGold=new Slider("Minimum base gold to recall", 560, 0, 4000);
+            flatGold=new Slider("Minimum base gold to recall", 1200, 0, 4000);
             goldPerLevel = new Slider("Minmum gold per level to recall", 70, 0, 300);
             menu.Add("mingold", flatGold);
             menu.Add("goldper", goldPerLevel);
@@ -66,7 +66,7 @@ AutoBuddy won't recall if you have less gold than needed for next item.
             }
 
             //To many backs. Added little autistic push^^
-            if ((AutoWalker.p.Gold > 2000 && AutoWalker.p.Gold > ShopGlobals.GoldForNextItem && AutoWalker.p.InventoryItems.Length < 8 && recallsWithGold <= 30))
+            if (((AutoWalker.p.Gold > flatGold.CurrentValue + AutoWalker.p.Level * goldPerLevel.CurrentValue) && AutoWalker.p.Gold > ShopGlobals.GoldForNextItem && AutoWalker.p.InventoryItems.Length < 8 && recallsWithGold <= 30))
             {
                 if (AutoWalker.p.Gold > (AutoWalker.p.Level + 2) * 150 && AutoWalker.p.InventoryItems.Length < 8 &&
                      recallsWithGold <= 30)
@@ -77,7 +77,7 @@ AutoBuddy won't recall if you have less gold than needed for next item.
                 return;
             }
 
-            if (AutoWalker.p.HealthPercent() < 30)
+            if (AutoWalker.p.HealthPercent() < 30 && recallsWithGold <= 30)
             {
                 AIHeroClient victim = null;
                 victim = EntityManager.Heroes.Enemies.Where(
@@ -90,22 +90,22 @@ AutoBuddy won't recall if you have less gold than needed for next item.
 
                 if (victim != null)
                 {
-                    //Chat.Print("Debug: Victim found in range -> recal ");
+                    if (AutoWalker.p.Gold > (AutoWalker.p.Level + 2) * 150 && AutoWalker.p.InventoryItems.Length < 8 &&
+                     recallsWithGold <= 30)
+                        recallsWithGold++;
+
+                    if (MainMenu.GetMenu("AB").Get<CheckBox>("debuginfo").CurrentValue)
+                        Chat.Print("Debug: Victim found in range -> recal ");
+
                     current.SetLogic(LogicSelector.MainLogics.RecallLogic);
                     Core.DelayAction(ShouldRecall, 500);
                     return;
                 }
-                //Chat.Print("Debug: Victim not found in range -> push");
+
+                if (MainMenu.GetMenu("AB").Get<CheckBox>("debuginfo").CurrentValue)
+                    Chat.Print("Debug: Victim not found in range -> push");
             }
 
-           /* if ((AutoWalker.p.Gold > flatGold.CurrentValue+AutoWalker.p.Level*goldPerLevel.CurrentValue&&AutoWalker.p.Gold>ShopGlobals.GoldForNextItem && AutoWalker.p.InventoryItems.Length < 8 &&
-                 recallsWithGold <= 30) || AutoWalker.p.HealthPercent() < 25)
-            {
-                if (AutoWalker.p.Gold > (AutoWalker.p.Level + 2)*150 && AutoWalker.p.InventoryItems.Length < 8 &&
-                    recallsWithGold <= 30)
-                    recallsWithGold++;
-                current.SetLogic(LogicSelector.MainLogics.RecallLogic);
-            }*/
             Core.DelayAction(ShouldRecall, 500);
         }
 

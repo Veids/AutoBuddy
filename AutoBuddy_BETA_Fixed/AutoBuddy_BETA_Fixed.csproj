@@ -119,6 +119,7 @@
     <Compile Include="Utilities\AutoShop\EasyShopV2.cs" />
     <Compile Include="Utilities\AutoShop\BrutalItemInfo.cs" />
     <Compile Include="Utilities\AutoShop\LoLItem.cs" />
+    <Compile Include="Utilities\LanePower.cs" />
     <Compile Include="Utilities\Pathfinder\NavGraph.cs" />
     <Compile Include="Utilities\Pathfinder\NavGraphTest.cs" />
     <Compile Include="Utilities\Pathfinder\Node.cs" />
