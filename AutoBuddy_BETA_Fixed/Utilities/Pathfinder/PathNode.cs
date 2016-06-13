@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AutoBuddy.Utilities.Pathfinder
+﻿namespace AutoBuddy.Utilities.Pathfinder
 {
     internal class PathNode
     {

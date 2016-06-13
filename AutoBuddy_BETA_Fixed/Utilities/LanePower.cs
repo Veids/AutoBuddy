@@ -2,16 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using EloBuddy;
+using EloBuddy.SDK.Menu;
+using EloBuddy.SDK.Menu.Values;
 
 namespace AutoBuddy.Utilities
 {
-    //All copyrights to Screeder (https://github.com/Screeder)
+    //Ported from Screeder (https://github.com/Screeder)
     
-    class LanePower
+    internal class LanePower
     {
         private bool active;
 
-        private Dictionary<String, Double> minionPower = new Dictionary<string, double> {
+        private readonly Dictionary<string, double> minionPower = new Dictionary<string, double> {
             { "SRU_ChaosMinionMelee", 0.5 },
             { "SRU_ChaosMinionRanged", 0.35 },
             { "SRU_ChaosMinionSiege", 1.5 },
@@ -22,7 +24,7 @@ namespace AutoBuddy.Utilities
             { "SRU_OrderMinionSuper", 4.0 },
             };
 
-        private Dictionary<String, Lane> turretBonus = new Dictionary<string, Lane> {
+        private readonly Dictionary<string, Lane> turretBonus = new Dictionary<string, Lane> {
             { "Turret_T2_R_01_A", Lane.Bot },
             { "Turret_T2_R_02_A", Lane.Bot },
             { "Turret_T2_R_03_A", Lane.Bot },
@@ -48,24 +50,14 @@ namespace AutoBuddy.Utilities
 
         private List<AIHeroClient> heroes = new List<AIHeroClient>();
 
-        struct MinionStruct
+        private struct MinionStruct
         { 
             public Lane Lane;
 
             public double Power;
-
-            public bool Active;
         }
 
-        enum Lane
-        {
-            Unknown,
-            Top,
-            Mid,
-            Bot
-        }
-
-        struct PowerDiff
+        private struct PowerDiff
         {
             public enum Orientation
             {
@@ -107,43 +99,27 @@ namespace AutoBuddy.Utilities
             }
 
             Game.OnUpdate += Game_OnUpdate;
-            Obj_AI_Base.OnProcessSpellCast += Obj_AI_Base_OnProcessSpellCast;
             GameObject.OnCreate += Obj_AI_Minion_OnCreate;
             GameObject.OnDelete += Obj_AI_Minion_OnDelete;
+
+            if (MainMenu.GetMenu("AB").Get<CheckBox>("debuginfo").CurrentValue)
+                Drawing.OnDraw += Drawing_OnDraw;
         }
 
         ~LanePower()
         {
             active = false;
             Game.OnUpdate -= Game_OnUpdate;
-            Obj_AI_Base.OnProcessSpellCast -= Obj_AI_Base_OnProcessSpellCast;
             GameObject.OnCreate -= Obj_AI_Minion_OnCreate;
             GameObject.OnDelete -= Obj_AI_Minion_OnDelete;
+
+            if (MainMenu.GetMenu("AB").Get<CheckBox>("debuginfo").CurrentValue)
+                Drawing.OnDraw -= Drawing_OnDraw;
         }
 
         public bool IsActive()
         {
             return active;
-        }
-
-        private void Obj_AI_Base_OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
-        {
-            if (!IsActive())
-                return;
-
-            Obj_AI_Minion unit = sender as Obj_AI_Minion;
-            if (unit != null)
-            {
-                foreach (KeyValuePair<Obj_AI_Minion, MinionStruct> minion in minions.ToArray())
-                {
-                    if (unit.NetworkId == minion.Key.NetworkId)
-                    {
-                        MinionStruct value = minion.Value;
-                        value.Active = true;
-                        minions[minion.Key] = value;
-                    }
-                }
-            }
         }
 
         private void Game_OnUpdate(EventArgs args)
@@ -152,16 +128,8 @@ namespace AutoBuddy.Utilities
                 return;
 
             foreach (KeyValuePair<Obj_AI_Minion, MinionStruct> minion in minions.ToArray())
-            {
                 if (!minion.Key.IsValid)
-                {
-                    this.minions.Remove(minion.Key);
-                }
-            }
-
-            int i = 0;
- 
-            
+                    minions.Remove(minion.Key);
         }
 
         private void Obj_AI_Minion_OnCreate(GameObject sender, EventArgs args)
@@ -171,12 +139,8 @@ namespace AutoBuddy.Utilities
 
             Obj_AI_Minion minion = sender as Obj_AI_Minion;
             if (minion != null)
-            {
                 if (minionPower.ContainsKey(minion.BaseSkinName))
-                {
-                    minions.Add(minion, new MinionStruct() { Lane = GetLane(minion), Power = minionPower[minion.BaseSkinName], Active = false });
-                }
-            }
+                    minions.Add(minion, new MinionStruct() { Lane = minion.GetLane(), Power = minionPower[minion.BaseSkinName] });
         }
 
         private void Obj_AI_Minion_OnDelete(GameObject sender, EventArgs args)
@@ -185,17 +149,21 @@ namespace AutoBuddy.Utilities
                 return;
 
             foreach (KeyValuePair<Obj_AI_Minion, MinionStruct> minion in minions.ToArray())
-            {
                 if (minion.Key.IsValid && minion.Key.NetworkId == sender.NetworkId)
-                {
                     minions.Remove(minion.Key);
-                }
-            }
         }
 
-        private double MaxDiff(double value)
+        private void Drawing_OnDraw(EventArgs args)
         {
-            return value > 10 ? 10 : value < -10 ? -10 : value;
+            PowerDiff toplane = GetPowerDifference(Lane.Top);
+            PowerDiff midlane = GetPowerDifference(Lane.Mid);
+            PowerDiff botlane = GetPowerDifference(Lane.Bot);
+
+            double top = toplane.Ally * 100 / (toplane.Ally + toplane.Enemy);
+            double mid = midlane.Ally * 100 / (midlane.Ally + midlane.Enemy);
+            double bot = botlane.Ally * 100 / (botlane.Ally + botlane.Enemy);
+
+            Drawing.DrawText(250, 1, System.Drawing.Color.Gold, "Top: " + (int)top + " Mid: " + (int)mid + " Bot: " + (int)bot);          
         }
 
         private PowerDiff GetPowerDifference(Lane lane)
@@ -205,10 +173,10 @@ namespace AutoBuddy.Utilities
 
             int allyCount = 0;
             int enemyCount = 0;
-
+            
             foreach (KeyValuePair<Obj_AI_Minion, MinionStruct> minion in minions)
             {
-                if (minion.Key != null && minion.Key.IsValid && minion.Value.Lane == lane && minion.Value.Active)
+                if (minion.Key != null && minion.Key.IsValid && minion.Value.Lane == lane)
                 {
                     if (ObjectManager.Player.Team == minion.Key.Team)
                     {  
@@ -249,23 +217,6 @@ namespace AutoBuddy.Utilities
             }
 
             return powerDiff;
-        }
-
-        private Lane GetLane(Obj_AI_Minion minion)
-        {
-            if (minion.Name.Contains("L0"))
-            {
-                return Lane.Bot;
-            }
-            else if (minion.Name.Contains("L1"))
-            {
-                return Lane.Mid;
-            }
-            else if (minion.Name.Contains("L2"))
-            {
-                return Lane.Top;
-            }
-            return Lane.Unknown;
         }
 
         private double GetHeroLevelDiff(GameObjectTeam team)
@@ -319,26 +270,23 @@ namespace AutoBuddy.Utilities
         {
             double bonus = 0.0;
             double level = GetHeroLevelDiff(minion.Key.Team);
-            if (level != 0)
+            if (level == 0) return bonus;
+            if (level > 0)
             {
-                if (level > 0)
-                {
-                    Lane lane = minion.Value.Lane;
-                    if (lane != Lane.Unknown)
-                    {
-                        double turretDiff = GetTurretDiff(lane, minion.Key.Team);
-                        bonus = 0.05 + (0.05 * Math.Max(0, turretDiff));
-                    }
-                }
-                else if (minion.Key.IsTargetable != false)
-                {
+                Lane lane = minion.Value.Lane;
+                if (lane == Lane.Unknown) return bonus;
+
+                double turretDiff = GetTurretDiff(lane, minion.Key.Team);
+                bonus = 0.05 + (0.05 * Math.Max(0, turretDiff));
+            }
+            else if (minion.Key.IsTargetable != false)
+            {
 //                     Lane lane = minion.Value.Lane;
 //                     if (lane != Lane.Unknown)
 //                     {
 //                         double turretDiff = GetTurretDiff(lane, minion.Key.Target);
 //                         bonus = -0.05 - (0.05 * Math.Max(0, turretDiff));
 //                     }
-                }
             }
             return bonus;
         }

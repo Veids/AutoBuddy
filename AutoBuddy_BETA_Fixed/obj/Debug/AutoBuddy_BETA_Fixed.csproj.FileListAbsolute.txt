@@ -44,3 +44,4 @@ C:\Users\veids\Documents\Visual Studio 2015\Projects\AutoBuddy\AutoBuddy\AutoBud
 C:\Users\veids\Documents\Visual Studio 2015\Projects\AutoBuddy\AutoBuddy\AutoBuddy_BETA_Fixed\obj\Debug\AutoBuddy_BETA_Fixed.csprojResolveAssemblyReference.cache
 C:\Users\veids\Documents\Visual Studio 2015\Projects\AutoBuddy\AutoBuddy\AutoBuddy_BETA_Fixed\obj\Debug\AutoBuddy.Properties.Resources.resources
 C:\Users\veids\Documents\Visual Studio 2015\Projects\AutoBuddy\AutoBuddy\AutoBuddy_BETA_Fixed\obj\Debug\AutoBuddy_BETA_Fixed.csproj.GenerateResource.Cache
+C:\Users\veids\Documents\Visual Studio 2015\Projects\AutoBuddy\AutoBuddy\AutoBuddy_BETA_Fixed\obj\Debug\AutoBuddy_BETA_Fixed.csproj.AutoBuddy.exe.config

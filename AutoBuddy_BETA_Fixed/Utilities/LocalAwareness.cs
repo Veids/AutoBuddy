@@ -10,6 +10,7 @@ namespace AutoBuddy.Utilities
     {
         public readonly List<HeroInfo> heroTable;
         public readonly HeroInfo me;
+        public readonly LanePower lp;
 
         public LocalAwareness()
         {
@@ -24,6 +25,7 @@ namespace AutoBuddy.Utilities
                 else
                     heroTable.Add(new HeroInfo(h));
             }
+            lp = new LanePower();
         }
 
 

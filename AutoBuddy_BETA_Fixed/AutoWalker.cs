@@ -64,9 +64,8 @@ namespace AutoBuddy
             Game.OnUpdate += Game_OnUpdate;
 
             if (!MainMenu.GetMenu("AB").Get<CheckBox>("disableAutoBuddy").CurrentValue)
-            {
                 Orbwalker.OverrideOrbwalkPosition = () => Target;
-            } 
+
             if (Orbwalker.HoldRadius > 130 || Orbwalker.HoldRadius < 80)
             {
                 Chat.Print("=================WARNING=================", Color.Red);
@@ -74,6 +73,7 @@ namespace AutoBuddy
                 Chat.Print("Please set hold radius through menu=>Orbwalker");
                 Chat.Print("Recommended values: Hold radius: 80-130, Delay between movements: 100-250");
             }
+
             if (MainMenu.GetMenu("AB").Get<CheckBox>("debuginfo").CurrentValue)
                 Drawing.OnDraw += Drawing_OnDraw;
             
@@ -83,12 +83,7 @@ namespace AutoBuddy
             Game.OnTick += OnTick;
             Chat.OnMessage += Chat_OnMessage;
             Drawing.OnDraw += Drawing_OnDraw;
-
-
         }
-
-
-        
 
         public static bool Recalling()
         {
@@ -149,8 +144,6 @@ namespace AutoBuddy
 
         private static void Game_OnUpdate(EventArgs args)
         {
-            
-
             if (activeMode == Orbwalker.ActiveModes.LaneClear)
             {
                 Orbwalker.ActiveModesFlags = (p.TotalAttackDamage < 150 &&
@@ -176,17 +169,13 @@ namespace AutoBuddy
         {
             Circle.Draw(color,40, Target );
             for (int i = 0; i < PfNodes.Count-1; i++)
-            {
                 if(PfNodes[i].IsOnScreen()||PfNodes[i+1].IsOnScreen())
                     Line.DrawLine(Color.Aqua, 4, PfNodes[i], PfNodes[i+1]);
-            }
         
         }
 
         public static void WalkTo(Vector3 tgt)
         {
-
-            
             if (!newPF)
             {
                 Target = tgt;
@@ -197,13 +186,9 @@ namespace AutoBuddy
             {
                 float dist = tgt.Distance(PfNodes[PfNodes.Count - 1]);
                 if ( dist>900|| dist > 300&&p.Distance(tgt)<2000)
-                {
                     PfNodes = NavGraph.FindPathRandom(p.Position, tgt);
-                }
                 else
-                {
                     PfNodes[PfNodes.Count - 1] = tgt;
-                }
                 Target = PfNodes[0];
             }
             else
@@ -214,15 +199,9 @@ namespace AutoBuddy
                     Target = PfNodes[0];
                 }
                 else
-                {
                     Target = tgt;
-                }
             }
-            
         }
-
-
-
 
         private static void updateItems()
         {
@@ -231,11 +210,13 @@ namespace AutoBuddy
             Core.DelayAction(updateItems, 5000);
             
         }
+
         public static void UseSeraphs()
         {
             if (seraphs != null && seraphs.CanUseItem())
                 seraphs.Cast();
         }
+
         public static void UseGhost()
         {
             if (HasGhost == true && Ghost.IsReady())
@@ -243,6 +224,7 @@ namespace AutoBuddy
                 Ghost.Cast();
             }   
         }
+
         public static void UseHPot()
         {
             updateItems();
@@ -254,21 +236,19 @@ namespace AutoBuddy
                 hpSlot = -1;
             }
         }
+
         public static void UseBarrier()
         {
             if (HasBarrier == true && Barrier.IsReady())
-            {
                 Barrier.Cast();
-            }
         }
+
         public static void UseHeal()
         {
             if (HasHeal == true && Heal.IsReady())
-            {
                 Heal.Cast();
-            }
-                
         }
+
         public static void UseIgnite(AIHeroClient target = null)
         {
             if (!HasIgnite == true || !Ignite.IsReady()) return;
@@ -278,10 +258,7 @@ namespace AutoBuddy
                         .OrderBy(en => en.Health)
                         .FirstOrDefault();
             if (target != null && p.Distance(target) < 600 + target.BoundingRadius)
-            {
                 Ignite.Cast(target);
-            }
-                
         }
 
         private static void initSummonerSpells()
@@ -336,11 +313,7 @@ namespace AutoBuddy
                 HasIgnite = true;
                 Ignite = new Spell.Targeted(IgniteCheck.Slot, 600);
             }
-
-
         }
-
-
 
         #region old orbwalking, for those with not working orbwalker
 
@@ -348,10 +321,7 @@ namespace AutoBuddy
         private static int adjustAnimation = 20;
         private static float holdRadius = 50;
         private static float movementDelay = .25f;
-
         private static float nextMove;
-
-
 
         private static void oldOrbwalk()
         {
@@ -361,13 +331,11 @@ namespace AutoBuddy
             Orbwalker.OnPreAttack+=Orbwalker_OnPreAttack;
         }
 
-
         private static void Orbwalker_OnPreAttack(AttackableUnit tgt, Orbwalker.PreAttackArgs args)
         {
             nextMove = Game.Time + ObjectManager.Player.AttackCastDelay +
                        (Game.Ping + adjustAnimation + RandGen.r.Next(maxAdditionalTime)) / 1000f;
         }
-
 
         private static void OnDraw(EventArgs args)
         {
@@ -378,8 +346,7 @@ namespace AutoBuddy
             Drawing.DrawText(200, 200, Color.Aqua, TimeString);
         }
 
-
-    private static void OnTick(EventArgs args)
+        private static void OnTick(EventArgs args)
         {
             var turret = ObjectManager.Get<Obj_HQ>().First(tur => tur.IsAlly && tur.Name.Contains("HQ_T"));
 
@@ -410,10 +377,6 @@ namespace AutoBuddy
                 Chat.Print("Closing game because your stuck :/");
                 Game.QuitGame();
             }
-           
-            
-            
-
 
             if (PfNodes.Count != 0)
             {
@@ -423,19 +386,13 @@ namespace AutoBuddy
                     PfNodes.RemoveAt(0);
                     
                 }
-
             }
-
-
 
             if (!oldWalk||ObjectManager.Player.Position.Distance(Target) < holdRadius || Game.Time < nextMove) return;
             nextMove = Game.Time + movementDelay;
             Player.IssueOrder(GameObjectOrder.MoveTo, Target, true);
         }
-            
 
-    
-        
         public static string RandomString(int length)
         {
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -443,13 +400,6 @@ namespace AutoBuddy
             return new string(Enumerable.Repeat(chars, length)
               .Select(s => s[random.Next(s.Length)]).ToArray());
         }
-
     }
-
 #endregion
-
-
-
-
-
 }

@@ -2,7 +2,6 @@ using System;
 using System.IO;
 using System.Linq;
 using EloBuddy;
-using EloBuddy.SDK.Menu.Values;
 
 namespace AutoBuddy.Utilities.AutoLvl
 {

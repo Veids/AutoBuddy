@@ -106,7 +106,6 @@ namespace AutoBuddy.Utilities.AutoShop
 
             }
 
-
             Core.DelayAction(() =>
             {
                 if (currentPos == -1) return;

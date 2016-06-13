@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Reflection;
 using AutoBuddy.Humanizers;
@@ -32,6 +31,7 @@ namespace AutoBuddy
         private static LogicSelector Logic { get; set; }
         public static Item BlackSpear;
         public static int hpvaluePot;
+
         public static void Main()
         {
             Hacks.RenderWatermark = false;
