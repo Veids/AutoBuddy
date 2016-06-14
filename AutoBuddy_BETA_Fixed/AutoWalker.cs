@@ -245,13 +245,13 @@ namespace AutoBuddy
 
         public static void UseHeal()
         {
-            if (HasHeal == true && Heal.IsReady())
+            if (HasHeal && Heal.IsReady())
                 Heal.Cast();
         }
 
         public static void UseIgnite(AIHeroClient target = null)
         {
-            if (!HasIgnite == true || !Ignite.IsReady()) return;
+            if (!HasIgnite || !Ignite.IsReady()) return;
 
             if (target == null)target =
                     EntityManager.Heroes.Enemies.Where(en => en.Distance(p) < 600 + en.BoundingRadius)
@@ -263,56 +263,51 @@ namespace AutoBuddy
 
         private static void initSummonerSpells()
         {
-            //wait for fix
-            //Recall = new Spell.Active(SpellSlot.Recall);
-            //Barrier = new Spell.Active(ObjectManager.Player.GetSpellSlotFromName("summonerbarrier"));
-            //Ghost = new Spell.Active(ObjectManager.Player.GetSpellSlotFromName("summonerhaste"));
-            //Flash = new Spell.Skillshot(ObjectManager.Player.GetSpellSlotFromName("summonerflash"), 600, SkillShotType.Circular);
-            //Heal = new Spell.Active(ObjectManager.Player.GetSpellSlotFromName("summonerheal"), 600);
-            //Ignite = new Spell.Targeted(ObjectManager.Player.GetSpellSlotFromName("summonerdot"), 600);
-            //Exhaust = new Spell.Targeted(ObjectManager.Player.GetSpellSlotFromName("summonerexhaust"), 600);
-            //Teleport = new Spell.Targeted(ObjectManager.Player.GetSpellSlotFromName("summonerteleport"), int.MaxValue);
-            //Smite = new Spell.Targeted(ObjectManager.Player.GetSpellSlotFromName("smite"), 600);
-
-            //    Recall = new Spell.Active(SpellSlot.Recall);
-            //    Barrier = Player.Spells.FirstOrDefault(sp => sp.SData.Name.Contains("summonerbarrier")) == null ? null : new Spell.Active(ObjectManager.Player.GetSpellSlotFromName("summonerbarrier"));
-            //    Ghost = Player.Spells.FirstOrDefault(sp => sp.SData.Name.Contains("summonerhaste")) == null ? null : new Spell.Active(ObjectManager.Player.GetSpellSlotFromName("summonerhaste"));
-            //    Flash = Player.Spells.FirstOrDefault(sp => sp.SData.Name.Contains("summonerflash")) == null ? null : new Spell.Skillshot(ObjectManager.Player.GetSpellSlotFromName("summonerflash"), 600, SkillShotType.Circular);
-            //    Heal = Player.Spells.FirstOrDefault(sp => sp.SData.Name.Contains("summonerheal")) == null ? null : new Spell.Active(ObjectManager.Player.GetSpellSlotFromName("summonerheal"), 600);
-            //    Ignite = Player.Spells.FirstOrDefault(sp => sp.SData.Name.Contains("summonerdot")) == null ? null : new Spell.Targeted(ObjectManager.Player.GetSpellSlotFromName("summonerdot"), 600);
-            //    Exhaust = Player.Spells.FirstOrDefault(sp => sp.SData.Name.Contains("summonerexhaust")) == null ? null : new Spell.Targeted(ObjectManager.Player.GetSpellSlotFromName("summonerexhaust"), 600);
-            //    Teleport = Player.Spells.FirstOrDefault(sp => sp.SData.Name.Contains("summonerteleport")) == null ? null : new Spell.Targeted(ObjectManager.Player.GetSpellSlotFromName("summonerteleport"), int.MaxValue);
-            //    Smite = Player.Spells.FirstOrDefault(sp => sp.SData.Name.Contains("smite")) == null ? null : new Spell.Targeted(ObjectManager.Player.GetSpellSlotFromName("smite"), 600);
-            //
             Recall = new Spell.Active(SpellSlot.Recall);
-            //InitHeal
-            var HealCheck = Player.Spells.FirstOrDefault(s => s.Name.ToLower().Contains("heal"));
-            if (HealCheck != null)
-            {
-                HasHeal = true;
-                Heal = new Spell.Active(HealCheck.Slot, 600);
-            }
-            //InitGhost
-            var GhostCheck = Player.Spells.FirstOrDefault(s => s.Name.ToLower().Contains("haste"));
-            if (GhostCheck != null)
-            {
-                HasGhost = true;
-                Ghost = new Spell.Active(GhostCheck.Slot);
-            }
-            //InitBarrier
-            var BarrierCheck = Player.Spells.FirstOrDefault(s => s.Name.ToLower().Contains("barrier"));
-            if (BarrierCheck != null)
-            {
-                HasBarrier = true;
-                Barrier = new Spell.Active(BarrierCheck.Slot);
-            }
-           // InitIgnite
-            var IgniteCheck = Player.Spells.FirstOrDefault(s => s.Name.ToLower().Contains("dot"));
-            if (IgniteCheck != null)
-            {
-                HasIgnite = true;
-                Ignite = new Spell.Targeted(IgniteCheck.Slot, 600);
-            }
+
+            foreach (var spell in Player.Spells)
+                switch (spell.Name)
+                {
+                    case "SummonerHeal":
+                        HasHeal = true;
+                        Heal = new Spell.Active(spell.Slot, 600);
+                        break;
+
+                    case "SummonerHaste":
+                        HasGhost = true;
+                        Ghost = new Spell.Active(spell.Slot);
+                        break;
+
+                    case "SummonerBarrier":
+                        HasBarrier = true;
+                        Barrier = new Spell.Active(spell.Slot);
+                        break;
+
+                    case "SummonerDot":
+                        HasIgnite = true;
+                        Ignite = new Spell.Targeted(spell.Slot, 600);
+                        break;
+
+                    case "SummonerFlash":
+                        HasFlash = true;
+                        Flash = new Spell.Skillshot(spell.Slot, 400, SkillShotType.Circular);
+                        break;
+
+                    case "SummonerTeleport":
+                        HasTeleport = true;
+                        Teleport = new Spell.Targeted(spell.Slot, int.MaxValue);
+                        break;
+
+                    case "SummonerSmite":
+                        HasSmite = true;
+                        Smite = new Spell.Targeted(spell.Slot, 500);
+                        break;
+
+                    case "SummonerExhaust":
+                        HasExhaust = true;
+                        Exhaust = new Spell.Targeted(spell.Slot, 650);
+                        break;
+                }
         }
 
         #region old orbwalking, for those with not working orbwalker
