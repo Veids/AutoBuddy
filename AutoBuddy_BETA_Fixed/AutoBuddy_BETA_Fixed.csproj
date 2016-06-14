@@ -150,6 +150,7 @@
     <Compile Include="Utilities\Telemetry.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include=".suo" />
     <None Include="App.config" />
     <None Include="Resources\NavGraphSummonersRift" />
     <None Include="Resources\NavGraphSummonersRiftOld" />
@@ -184,7 +185,7 @@
   <PropertyGroup>
     <PreBuildEvent>IF NOT "%25Brutal%25"=="" (IF "$(DevEnvDir)"=="D:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\IDE\" (java -jar C:\UpVer.jar $(ProjectDir)\Properties\AssemblyInfo.cs))
 </PreBuildEvent>
-	<AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
