@@ -150,7 +150,6 @@
     <Compile Include="Utilities\Telemetry.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include=".suo" />
     <None Include="App.config" />
     <None Include="Resources\NavGraphSummonersRift" />
     <None Include="Resources\NavGraphSummonersRiftOld" />
