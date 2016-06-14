@@ -163,7 +163,7 @@ namespace AutoBuddy.Utilities
             double mid = midlane.Ally * 100 / (midlane.Ally + midlane.Enemy);
             double bot = botlane.Ally * 100 / (botlane.Ally + botlane.Enemy);
 
-            Drawing.DrawText(250, 1, System.Drawing.Color.Gold, "Top: " + (int)top + " Mid: " + (int)mid + " Bot: " + (int)bot);          
+            Drawing.DrawText(250, 100, System.Drawing.Color.Gold, "Top: " + (int)top + " mid: " + (int)mid + " bot: " + (int)bot);          
         }
 
         private PowerDiff GetPowerDifference(Lane lane)

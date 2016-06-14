@@ -23,8 +23,8 @@ namespace AutoBuddy.MainLogics
         public Recall(LogicSelector currentLogic, Menu parMenu)
         {
             Menu menu = parMenu.AddSubMenu("Recall settings", "ergtrh");
-            flatGold=new Slider("Minimum base gold to recall", 1200, 0, 4000);
-            goldPerLevel = new Slider("Minimum gold per level to recall", 70, 0, 300);
+            flatGold=new Slider("Minimum base gold to recall", 1300, 0, 4000);
+            goldPerLevel = new Slider("Minimum gold per level to recall", 65, 0, 300);
             menu.Add("mingold", flatGold);
             menu.Add("goldper", goldPerLevel);
             menu.AddSeparator(100);
@@ -71,8 +71,7 @@ AutoBuddy won't recall if you have less gold than needed for next item.
 
             if (((AutoWalker.p.Gold > flatGold.CurrentValue + AutoWalker.p.Level * goldPerLevel.CurrentValue) && AutoWalker.p.Gold > ShopGlobals.GoldForNextItem && AutoWalker.p.InventoryItems.Length < 8 && recallsWithGold <= 30))
             {
-                if (AutoWalker.p.Gold > (AutoWalker.p.Level + 2) * 150 && AutoWalker.p.InventoryItems.Length < 8 &&
-                     recallsWithGold <= 30)
+                if (AutoWalker.p.Gold > (AutoWalker.p.Level + 2) * 150 && AutoWalker.p.InventoryItems.Length < 8)
                     recallsWithGold++;
 
                 current.SetLogic(LogicSelector.MainLogics.RecallLogic);
@@ -94,18 +93,15 @@ AutoBuddy won't recall if you have less gold than needed for next item.
 
                 if (victim != null)
                 {
-                    if (MainMenu.GetMenu("AB").Get<CheckBox>("debuginfo").CurrentValue)
-                        Chat.Print("Debug: Victim found in range -> recal ");
+                    if (AutoWalker.p.Gold > (AutoWalker.p.Level + 2) * 150 && AutoWalker.p.InventoryItems.Length < 8)
+                        recallsWithGold++;
 
                     current.SetLogic(LogicSelector.MainLogics.RecallLogic);
                     Core.DelayAction(ShouldRecall, 500);
                     return;
                 }
-
-                if (MainMenu.GetMenu("AB").Get<CheckBox>("debuginfo").CurrentValue)
-                    Chat.Print("Debug: Victim not found in range -> push");
             }
-
+            
             Core.DelayAction(ShouldRecall, 500);
         }
 
