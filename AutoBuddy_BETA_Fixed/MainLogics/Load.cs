@@ -22,6 +22,8 @@ namespace AutoBuddy.MainLogics
         public bool waiting;
         private float lastSliderSwitch;
         private bool waitingSlider;
+        private bool hf = false;
+        private bool customlane = false;
 
         public Load(LogicSelector c)
         {
@@ -29,8 +31,8 @@ namespace AutoBuddy.MainLogics
             startTime = Game.Time + waitTime + RandGen.r.NextFloat(-10, 20);
             if (MainMenu.GetMenu("AB").Get<CheckBox>("debuginfo").CurrentValue)
                 Drawing.OnDraw += Drawing_OnDraw;
-            if (!AutoWalker.p.Name.Equals("Challenjour Ryze"))
-                Chat.OnMessage += Chat_OnMessage;
+
+            Chat.OnMessage += Chat_OnMessage;
             MainMenu.GetMenu("AB").Get<CheckBox>("reselectlane").OnValueChange += Checkbox_OnValueChange;
             MainMenu.GetMenu("AB").Get<Slider>("lane").OnValueChange += Slider_OnValueChange;
         }
@@ -138,39 +140,37 @@ namespace AutoBuddy.MainLogics
         private void Chat_OnMessage(AIHeroClient sender, ChatMessageEventArgs args)
         {
 
-            if (!args.Message.StartsWith("<font color=\"#40c1ff\">Challenjour Ryze")) return;
-            if (args.Message.Contains("have fun"))
+            if (!hf && (args.Message.Contains("have fun") || args.Message.Contains("hf")))
                 Core.DelayAction(() => Chat.Say("gl hf"), RandGen.r.Next(2000, 4000));
-            if (args.Message.Contains("hello"))
-                Core.DelayAction(() => Chat.Say("hi Christian"), RandGen.r.Next(2000, 4000));
-            if (args.Message.Contains("Which")||args.Message.Contains("Whats"))
-                Core.DelayAction(() => Chat.Say(Assembly.GetExecutingAssembly().GetName().Version.Revision.ToString()), RandGen.r.Next(2000, 4000));
-            if (args.Message.Contains("go top please."))
+
+            if (!args.Message.Contains(AutoWalker.p.Name)) return;
+
+            if (!customlane)
             {
-                Core.DelayAction(() => Chat.Say("kk"), RandGen.r.Next(1000, 2000));
-                Core.DelayAction(() => SelectLane2(Lane.Top), RandGen.r.Next(2500, 4000));
+                if (args.Message.Contains("go top"))
+                {
+                    Core.DelayAction(() => SelectLane2(Lane.Top), RandGen.r.Next(2500, 4000));
+                    customlane = true;
+                }
+
+                if (args.Message.Contains("go mid"))
+                {
+                    Core.DelayAction(() => SelectLane2(Lane.Mid), RandGen.r.Next(2500, 4000));
+                    customlane = true;
+                }
+
+                if (args.Message.Contains("go bot"))
+                {
+                    Core.DelayAction(() => SelectLane2(Lane.Bot), RandGen.r.Next(2500, 4000));
+                    customlane = true;
+                }
             }
-            if (args.Message.Contains("go mid please."))
-            {
-                Core.DelayAction(() => Chat.Say("ok"), RandGen.r.Next(1000, 2000));
-                Core.DelayAction(() => SelectLane2(Lane.Mid), RandGen.r.Next(2500, 4000));
-            }
-            if (args.Message.Contains("go bot please."))
-            {
-                Core.DelayAction(() => Chat.Say("k"), RandGen.r.Next(1000, 2000));
-                Core.DelayAction(() => SelectLane2(Lane.Bot), RandGen.r.Next(2500, 4000));
-            }
-            if (args.Message.Contains("go where you want."))
-            {
-                Core.DelayAction(() => Chat.Say("yes sir"), RandGen.r.Next(1000, 2000));
-                Core.DelayAction(SelectLane, RandGen.r.Next(2500, 4000));
-            }
-            if (args.Message.Contains("Thank you"))
+
+            if (args.Message.Contains("thank you") || args.Message.Contains("ty"))
             {
                 Core.DelayAction(() => Chat.Say("np"), RandGen.r.Next(1000, 2000));
                 Core.DelayAction(SelectLane, RandGen.r.Next(2500, 4000));
             }
-
         }
 
         private void SelectMostPushedLane()
