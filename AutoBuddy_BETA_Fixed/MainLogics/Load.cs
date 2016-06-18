@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using AutoBuddy.Humanizers;
 using AutoBuddy.Utilities;
 using EloBuddy;
@@ -148,19 +149,19 @@ namespace AutoBuddy.MainLogics
             {
                 if (args.Message.Contains("go top"))
                 {
-                    Core.DelayAction(() => SelectLane2(Lane.Top), RandGen.r.Next(1500, 3000));
+                    Core.DelayAction(() => SelectLane2(Lane.Top), RandGen.r.Next(2500, 4000));
                     customlane = true;
                 }
 
                 if (args.Message.Contains("go mid"))
                 {
-                    Core.DelayAction(() => SelectLane2(Lane.Mid), RandGen.r.Next(1500, 3000));
+                    Core.DelayAction(() => SelectLane2(Lane.Mid), RandGen.r.Next(2500, 4000));
                     customlane = true;
                 }
 
                 if (args.Message.Contains("go bot"))
                 {
-                    Core.DelayAction(() => SelectLane2(Lane.Bot), RandGen.r.Next(1500, 3000));
+                    Core.DelayAction(() => SelectLane2(Lane.Bot), RandGen.r.Next(2500, 4000));
                     customlane = true;
                 }
             }
