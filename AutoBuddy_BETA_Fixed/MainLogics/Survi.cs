@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using AutoBuddy.Utilities.AutoShop;
 using EloBuddy;
 using EloBuddy.SDK;
 using EloBuddy.SDK.Menu;

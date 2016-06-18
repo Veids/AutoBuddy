@@ -63,8 +63,8 @@ namespace AutoBuddy
 
             Chat.Print("AutoBuddy:", System.Drawing.Color.White);
             Chat.Print("Loaded Version: " + ABVersion, System.Drawing.Color.LimeGreen);
-            Chat.Print("AutoBuddy: Starting in 10 seconds.");
-            Core.DelayAction(Start, 10000);
+            Chat.Print("AutoBuddy: Starting in 15 seconds.");
+            Core.DelayAction(Start, 15000);
             menu = MainMenu.AddMenu("AUTOBUDDY", "AB");
             menu.Add("sep1", new Separator(1));
             CheckBox c =
