@@ -139,40 +139,33 @@ namespace AutoBuddy.MainLogics
 
         private void Chat_OnMessage(AIHeroClient sender, ChatMessageEventArgs args)
         {
-
             if (!hf && (args.Message.Contains("have fun") || args.Message.Contains("hf")))
             {
                 hf = true;
                 Core.DelayAction(() => Chat.Say("gl hf"), RandGen.r.Next(2000, 4000));
             }
 
-            if (!args.Message.Contains(AutoWalker.p.Name)) return;
+            if (!args.Message.Contains(AutoWalker.p.Name, StringComparison.CurrentCultureIgnoreCase)) return;
 
             if (!customlane)
             {
-                if (args.Message.Contains("go top"))
+                if (args.Message.Contains("go top", StringComparison.CurrentCultureIgnoreCase))
                 {
                     Core.DelayAction(() => SelectLane2(Lane.Top), RandGen.r.Next(2500, 4000));
                     customlane = true;
                 }
 
-                if (args.Message.Contains("go mid"))
+                if (args.Message.Contains("go mid", StringComparison.CurrentCultureIgnoreCase))
                 {
                     Core.DelayAction(() => SelectLane2(Lane.Mid), RandGen.r.Next(2500, 4000));
                     customlane = true;
                 }
 
-                if (args.Message.Contains("go bot"))
+                if (args.Message.Contains("go bot", StringComparison.CurrentCultureIgnoreCase))
                 {
                     Core.DelayAction(() => SelectLane2(Lane.Bot), RandGen.r.Next(2500, 4000));
                     customlane = true;
                 }
-            }
-
-            if (args.Message.Contains("thank you") || args.Message.Contains("ty"))
-            {
-                Core.DelayAction(() => Chat.Say("np"), RandGen.r.Next(1000, 2000));
-                Core.DelayAction(SelectLane, RandGen.r.Next(2500, 4000));
             }
         }
 
@@ -349,6 +342,13 @@ namespace AutoBuddy.MainLogics
                 ret.Add(new ChampLane(h, lane));
             }
             return ret;
+        }
+    }
+    public static class StringExtensions
+    {
+        public static bool Contains(this string source, string toCheck, StringComparison comp)
+        {
+            return source.IndexOf(toCheck, comp) >= 0;
         }
     }
 }
