@@ -141,7 +141,10 @@ namespace AutoBuddy.MainLogics
         {
 
             if (!hf && (args.Message.Contains("have fun") || args.Message.Contains("hf")))
+            {
+                hf = true;
                 Core.DelayAction(() => Chat.Say("gl hf"), RandGen.r.Next(2000, 4000));
+            }
 
             if (!args.Message.Contains(AutoWalker.p.Name)) return;
 
