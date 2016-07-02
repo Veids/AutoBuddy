@@ -69,6 +69,7 @@ namespace AutoBuddy.MainLogics
                 case MainLogics.RecallLogic:
                     recallLogic.Deactivate();
                     break;
+
                 case MainLogics.CombatLogic:
                     combatLogic.Deactivate();
                     break;
@@ -80,21 +81,23 @@ namespace AutoBuddy.MainLogics
                 case MainLogics.PushLogic:
                     pushLogic.Activate();
                     break;
+
                 case MainLogics.LoadLogic:
                     loadLogic.Activate();
                     break;
+
                 case MainLogics.SurviLogic:
                     surviLogic.Activate();
-
                     break;
+
                 case MainLogics.RecallLogic:
                     recallLogic.Activate();
                     break;
+
                 case MainLogics.CombatLogic:
                     combatLogic.Activate();
                     break;
             }
-
 
             current = newlogic;
             return old;

@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
-using AutoBuddy.Utilities.AutoShop;
+using AutoBuddy.Utilities;
+using AutoBuddy.Humanizers;
 using EloBuddy;
 using EloBuddy.SDK;
 using EloBuddy.SDK.Menu;
@@ -18,7 +19,6 @@ namespace AutoBuddy.MainLogics
         private GrassObject g;
         //private float lastRecallGold;
         private float lastRecallTime;
-        private int recallsWithGold; //TODO repair shop and remove this tempfix
 
         public Recall(LogicSelector currentLogic, Menu parMenu)
         {
@@ -69,23 +69,20 @@ AutoBuddy won't recall if you have less gold than needed for next item.
                 return;
             }
 
-            if (((AutoWalker.p.Gold > flatGold.CurrentValue + AutoWalker.p.Level * goldPerLevel.CurrentValue) && AutoWalker.p.Gold > ShopGlobals.GoldForNextItem && AutoWalker.p.InventoryItems.Length < 8 && recallsWithGold <= 30))
+            if (((AutoWalker.p.Gold > flatGold.CurrentValue + AutoWalker.p.Level * goldPerLevel.CurrentValue) && AutoWalker.p.Gold > ShopGlobals.GoldForNextItem && AutoWalker.p.InventoryItems.Length < 8))
             {
-                if (AutoWalker.p.Gold > (AutoWalker.p.Level + 2) * 150 && AutoWalker.p.InventoryItems.Length < 8)
-                    recallsWithGold++;
-
                 current.SetLogic(LogicSelector.MainLogics.RecallLogic);
-                Core.DelayAction(ShouldRecall, 500);
+                Core.DelayAction(ShouldRecall, RandGen.r.Next(100, 300));
                 return;
             }
 
             //Bot will continue to push even with low hp if he will not find any enemies in the range
-            if (AutoWalker.p.HealthPercent() < 30 && recallsWithGold <= 30)
+            if (AutoWalker.p.HealthPercent() < 30)
             {
                 AIHeroClient victim = null;
                 victim = EntityManager.Heroes.Enemies.Where(
                    vic => !vic.IsZombie &&
-                       vic.Distance(AutoWalker.p) < vic.BoundingRadius + AutoWalker.p.AttackRange + 450 &&
+                       vic.Distance(AutoWalker.p) < vic.BoundingRadius + AutoWalker.p.AttackRange + 550 &&
                        vic.IsVisible() && vic.Health > 0 &&
                        current.localAwareness.MyStrength() / current.localAwareness.HeroStrength(vic) < 1)
                    .OrderBy(v => v.Health)
@@ -93,11 +90,8 @@ AutoBuddy won't recall if you have less gold than needed for next item.
 
                 if (victim != null)
                 {
-                    if (AutoWalker.p.Gold > (AutoWalker.p.Level + 2) * 150 && AutoWalker.p.InventoryItems.Length < 8)
-                        recallsWithGold++;
-
                     current.SetLogic(LogicSelector.MainLogics.RecallLogic);
-                    Core.DelayAction(ShouldRecall, 500);
+                    Core.DelayAction(ShouldRecall, RandGen.r.Next(100, 300));
                     return;
                 }
             }

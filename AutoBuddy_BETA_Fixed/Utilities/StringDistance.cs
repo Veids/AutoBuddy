@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace AutoBuddy.Utilities.AutoShop
+namespace AutoBuddy.Utilities
 {
     internal static class StringDistance
     {

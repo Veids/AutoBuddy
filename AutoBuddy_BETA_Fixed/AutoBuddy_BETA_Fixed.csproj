@@ -34,7 +34,7 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <AssemblyVersion>0.0.0.7</AssemblyVersion>
+    <AssemblyVersion>6.13.0.1</AssemblyVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -124,9 +124,8 @@
     </Compile>
     <Compile Include="Utilities\AutoLvl\SkillGrabber.cs" />
     <Compile Include="Utilities\AutoLvl\DefautSequences.cs" />
-    <Compile Include="Utilities\AutoShop\EasyShopV2.cs" />
-    <Compile Include="Utilities\AutoShop\BrutalItemInfo.cs" />
-    <Compile Include="Utilities\AutoShop\LoLItem.cs" />
+    <Compile Include="Utilities\AutoShop.cs" />
+    <Compile Include="Utilities\Inventory.cs" />
     <Compile Include="Utilities\LanePower.cs" />
     <Compile Include="Utilities\Pathfinder\NavGraph.cs" />
     <Compile Include="Utilities\Pathfinder\NavGraphTest.cs" />
@@ -134,8 +133,6 @@
     <Compile Include="Utilities\Pathfinder\PathNode.cs" />
     <Compile Include="Utilities\StringDistance.cs" />
     <Compile Include="Utilities\ChampLane.cs" />
-    <Compile Include="Utilities\AutoShop\BuildCreator.cs" />
-    <Compile Include="Utilities\AutoShop\BuildElement.cs" />
     <Compile Include="Utilities\AutoLvl\CustomLvlSeq.cs" />
     <Compile Include="Utilities\HeroInfo.cs" />
     <Compile Include="Utilities\LocalAwareness.cs" />
@@ -167,9 +164,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\item.txt" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

@@ -7,7 +7,6 @@ using System.Text;
 using System.Web;
 using AutoBuddy.Humanizers;
 using AutoBuddy.Utilities;
-using AutoBuddy.Utilities.AutoShop;
 using EloBuddy;
 using EloBuddy.SDK;
 using SharpDX;
@@ -222,18 +221,6 @@ namespace AutoBuddy
         {
 
             return (int) i == 2003 || (int) i == 2009 || (int) i == 2010 || (int) i == 2031;
-        }
-
-
-        public static int GetItemSlot(this LoLItem it)
-        {
-            BrutalItemInfo.GetItemSlot(it.id);
-            return -1;
-        }
-
-        public static float GetDmg(this SpellSlot slot)
-        {
-            return 1;
         }
 
         public static Vector3 Away(this Vector3 myPos, Vector3 threatPos, float range, float add = 200,

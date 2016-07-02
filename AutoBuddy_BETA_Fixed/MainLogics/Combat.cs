@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using AutoBuddy.Utilities.AutoShop;
 using EloBuddy;
 using EloBuddy.SDK;
 using EloBuddy.SDK.Menu;
@@ -29,7 +28,6 @@ namespace AutoBuddy.MainLogics
             Drawing.DrawText(250, 25, System.Drawing.Color.Gold,
                 "Combat, active:  " + active + " last mode: " + lastMode);
         }
-
 
         public void Activate()
         {
@@ -172,10 +170,7 @@ namespace AutoBuddy.MainLogics
                             tu.Position.Extend(AutoWalker.MyNexus, 1050 + AutoWalker.p.BoundingRadius).To3DWorld();*/
                 }
 
-
                 current.myChamp.Harass(har);
-
-
                 AutoWalker.WalkTo(harPos);
             }
         }

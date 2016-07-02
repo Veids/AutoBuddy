@@ -17,7 +17,6 @@ namespace AutoBuddy.Utilities
 
         public static void Init(string directory)
         {
-            
             dir = directory;
             setId();
         }
@@ -49,7 +48,7 @@ namespace AutoBuddy.Utilities
             {
                 {"id", id},
                 {"type", "Event"},
-                {"eventType", (string) args[0]},
+                {"eventType", (string) args[0]}
             })
                 arg.Add(kv.Key, kv.Value);
             string x ="http://autobuddy.tk/ann/d2.php".Post(arg);

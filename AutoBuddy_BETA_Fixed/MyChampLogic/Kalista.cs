@@ -1,11 +1,6 @@
 ﻿using AutoBuddy.MainLogics;
 using EloBuddy;
 using EloBuddy.SDK;
-using System;
-using System.Drawing;
-using EloBuddy.SDK.Events;
-using EloBuddy.SDK.Menu;
-using EloBuddy.SDK.Menu.Values;
 
 namespace AutoBuddy.MyChampLogic
 {

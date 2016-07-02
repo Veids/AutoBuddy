@@ -4,7 +4,6 @@ using System.Linq;
 using AutoBuddy.Humanizers;
 using AutoBuddy.MainLogics;
 using AutoBuddy.Utilities;
-using AutoBuddy.Utilities.AutoShop;
 using EloBuddy;
 using EloBuddy.Sandbox;
 using EloBuddy.SDK;
@@ -130,11 +129,9 @@ namespace AutoBuddy.MyChampLogic
         }
         private void updateTearStatus()
         {
-            isTearOwned = BrutalItemInfo.GetItemSlot(3070) != -1 || BrutalItemInfo.GetItemSlot(3003) != -1;
+            isTearOwned = Inventory.GetItemSlot(3070) != -1 || Inventory.GetItemSlot(3003) != -1;
             Core.DelayAction(updateTearStatus, 5000);
         }
-
-
 
         void Drawing_OnDraw(EventArgs args)
         {

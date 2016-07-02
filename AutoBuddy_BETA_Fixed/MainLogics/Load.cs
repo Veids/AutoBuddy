@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using AutoBuddy.Humanizers;
 using AutoBuddy.Utilities;
 using EloBuddy;
@@ -22,8 +21,8 @@ namespace AutoBuddy.MainLogics
         public bool waiting;
         private float lastSliderSwitch;
         private bool waitingSlider;
-        private bool hf = false;
-        private bool customlane = false;
+        private bool hf;
+        private bool customlane;
 
         public Load(LogicSelector c)
         {
@@ -120,10 +119,6 @@ namespace AutoBuddy.MainLogics
                 SelectMostPushedLane();
         }
 
-        public void Deactivate()
-        {
-        }
-
         private void CanSelectLane()
         {
             waiting = true;
@@ -145,27 +140,24 @@ namespace AutoBuddy.MainLogics
                 Core.DelayAction(() => Chat.Say("gl hf"), RandGen.r.Next(2000, 4000));
             }
 
-            if (!args.Message.Contains(AutoWalker.p.Name, StringComparison.CurrentCultureIgnoreCase)) return;
+            if (!customlane && !args.Message.Contains(AutoWalker.p.Name, StringComparison.CurrentCultureIgnoreCase)) return;
 
-            if (!customlane)
+            if (args.Message.Contains("go top", StringComparison.CurrentCultureIgnoreCase))
             {
-                if (args.Message.Contains("go top", StringComparison.CurrentCultureIgnoreCase))
-                {
-                    Core.DelayAction(() => SelectLane2(Lane.Top), RandGen.r.Next(2500, 4000));
-                    customlane = true;
-                }
+                Core.DelayAction(() => SelectLane2(Lane.Top), RandGen.r.Next(2500, 4000));
+                customlane = true;
+            }
 
-                if (args.Message.Contains("go mid", StringComparison.CurrentCultureIgnoreCase))
-                {
-                    Core.DelayAction(() => SelectLane2(Lane.Mid), RandGen.r.Next(2500, 4000));
-                    customlane = true;
-                }
+            if (args.Message.Contains("go mid", StringComparison.CurrentCultureIgnoreCase))
+            {
+                Core.DelayAction(() => SelectLane2(Lane.Mid), RandGen.r.Next(2500, 4000));
+                customlane = true;
+            }
 
-                if (args.Message.Contains("go bot", StringComparison.CurrentCultureIgnoreCase))
-                {
-                    Core.DelayAction(() => SelectLane2(Lane.Bot), RandGen.r.Next(2500, 4000));
-                    customlane = true;
-                }
+            if (args.Message.Contains("go bot", StringComparison.CurrentCultureIgnoreCase))
+            {
+                Core.DelayAction(() => SelectLane2(Lane.Bot), RandGen.r.Next(2500, 4000));
+                customlane = true;
             }
         }
 

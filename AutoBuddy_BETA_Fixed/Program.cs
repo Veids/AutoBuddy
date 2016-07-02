@@ -7,7 +7,6 @@ using AutoBuddy.MainLogics;
 using AutoBuddy.MyChampLogic;
 using AutoBuddy.Utilities;
 using AutoBuddy.Utilities.AutoLvl;
-using AutoBuddy.Utilities.AutoShop;
 using EloBuddy;
 using EloBuddy.Sandbox;
 using EloBuddy.SDK;
@@ -21,16 +20,18 @@ namespace AutoBuddy
 {
     internal static class Program
     {
-        private static AIHeroClient myHero
-        {
-            get { return Player.Instance; }
-        }
         private static Menu menu;
         private static string loadTextureDir = SandboxConfig.DataDirectory + "AutoBuddy\\";
         private static IChampLogic myChamp;
         private static LogicSelector Logic { get; set; }
+
         public static Item BlackSpear;
         public static int hpvaluePot;
+
+        private static AIHeroClient myHero
+        {
+            get { return Player.Instance; }
+        }
 
         public static void Main()
         {
@@ -52,12 +53,7 @@ namespace AutoBuddy
                 Chat.Print("Auto Black Spear loaded! Thanks @Enelx");
                 Game.OnUpdate += On_Update;
             }
-            //Causes freeze
-            //Telemetry.Init(Path.Combine(SandboxConfig.DataDirectory
-            //, "AutoBuddy"));
-            
-            //STILL BROKEN ;(
-            //createFS();
+
             Version v = Assembly.GetExecutingAssembly().GetName().Version;
             string ABVersion = v.Major + "." + v.MajorRevision + "." + v.Minor + "." + v.MinorRevision;
 
@@ -65,6 +61,8 @@ namespace AutoBuddy
             Chat.Print("Loaded Version: " + ABVersion, System.Drawing.Color.LimeGreen);
             Chat.Print("AutoBuddy: Starting in 15 seconds.");
             Core.DelayAction(Start, 15000);
+
+            //Creating menu
             menu = MainMenu.AddMenu("AUTOBUDDY", "AB");
             menu.Add("sep1", new Separator(1));
             CheckBox c =
@@ -126,23 +124,15 @@ namespace AutoBuddy
             try
             {
                 if (!Directory.Exists(loadTextureDir))
-                {
                     Directory.CreateDirectory(loadTextureDir);
-                }
+
                 if (MainMenu.GetMenu("AB").Get<CheckBox>("noTextures").CurrentValue == true)
                 {
                     if (!File.Exists(loadTextureDir + "loadTexture"))
-                    {
                         File.Create(loadTextureDir + "loadTexture");
-                    }
                 }
-                if (MainMenu.GetMenu("AB").Get<CheckBox>("noTextures").CurrentValue == false)
-                {
-                    if (File.Exists(loadTextureDir + "loadTexture"))
-                    {
+                else if (File.Exists(loadTextureDir + "loadTexture"))
                         File.Delete(loadTextureDir + "loadTexture");
-                    }
-                }
             }
             catch (Exception e)
             {
@@ -153,7 +143,6 @@ namespace AutoBuddy
         //For Kalista
         private static void On_Update(EventArgs args)
         {
-
             if (BlackSpear.IsOwned())
             {
                 foreach (AIHeroClient ally in EntityManager.Heroes.Allies)
@@ -179,10 +168,6 @@ namespace AutoBuddy
                     break;
                 case Champion.Caitlyn:
                     myChamp = new Caitlyn();
-                    break;
-                default:
-                    generic = true;
-                    myChamp = new Generic();
                     break;
                 case Champion.Ezreal:
                     myChamp = new Ezreal();
@@ -253,35 +238,28 @@ namespace AutoBuddy
                 case Champion.Nidalee:
                     myChamp = new Nidalee();
                     break;
+                default:
+                    generic = true;
+                    myChamp = new Generic();
+                    break;
             }
+
             CustomLvlSeq cl = new CustomLvlSeq(menu, AutoWalker.p, Path.Combine(SandboxConfig.DataDirectory
-            , "AutoBuddy\\Skills"));
+                , "AutoBuddy\\Skills"));
+
             if (!generic)
+            { AutoShop bc = new AutoShop(menu, myChamp.ShopSequence); }
+            else if (MainMenu.GetMenu("AB_" + ObjectManager.Player.ChampionName) != null &&
+                     MainMenu.GetMenu("AB_" + ObjectManager.Player.ChampionName).Get<Label>("shopSequence") != null)
             {
-                BuildCreator bc = new BuildCreator(menu, Path.Combine(SandboxConfig.DataDirectory
-                    , "AutoBuddy\\Builds"), myChamp.ShopSequence);
+                Chat.Print("Autobuddy: Loaded shop plugin for " + ObjectManager.Player.ChampionName);
+                AutoShop bc = new AutoShop(menu, MainMenu.GetMenu("AB_" + ObjectManager.Player.ChampionName)
+                    .Get<Label>("shopSequence")
+                    .DisplayName);
             }
-
-
             else
-            {
-                myChamp = new Generic();
-                if (MainMenu.GetMenu("AB_" + ObjectManager.Player.ChampionName) != null &&
-                    MainMenu.GetMenu("AB_" + ObjectManager.Player.ChampionName).Get<Label>("shopSequence") != null)
-                {
-                    Chat.Print("Autobuddy: Loaded shop plugin for " + ObjectManager.Player.ChampionName);
-                    BuildCreator bc = new BuildCreator(menu, Path.Combine(SandboxConfig.DataDirectory
-                        , "AutoBuddy\\Builds"),
-                        MainMenu.GetMenu("AB_" + ObjectManager.Player.ChampionName)
-                            .Get<Label>("shopSequence")
-                            .DisplayName);
-                }
-                else
-                {
-                    BuildCreator bc = new BuildCreator(menu, Path.Combine(SandboxConfig.DataDirectory
-                        , "AutoBuddy\\Builds"), myChamp.ShopSequence);
-                }
-            }
+            { AutoShop bc = new AutoShop(menu, myChamp.ShopSequence);}
+
             Logic = new LogicSelector(myChamp, menu);
             new Disrespekt();
             Telemetry.SendEvent("GameStart", new Dictionary<string, string>()

@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using AutoBuddy.Humanizers;
 using AutoBuddy.Utilities;
-using AutoBuddy.Utilities.AutoShop;
 using AutoBuddy.Utilities.Pathfinder;
 using EloBuddy;
 using EloBuddy.Sandbox;
@@ -116,8 +114,6 @@ namespace AutoBuddy
 
         public static Vector3 Target { get; private set; }
 
-
-
         private static void Chat_OnMessage(AIHeroClient sender, ChatMessageEventArgs args)
         {
             //Debug only
@@ -205,7 +201,7 @@ namespace AutoBuddy
 
         private static void updateItems()
         {
-            hpSlot = BrutalItemInfo.GetHPotionSlot();
+            hpSlot = Inventory.GetHPotionSlot();
             seraphs = p.InventoryItems.FirstOrDefault(it => (int)it.Id == 3040);
             Core.DelayAction(updateItems, 5000);
             
@@ -228,9 +224,8 @@ namespace AutoBuddy
         public static void UseHPot()
         {
             updateItems();
-            if (!Player.HasBuff("RegenerationPotion"))
+            if (!Player.HasBuff("RegenerationPotion") && !ObjectManager.Player.IsInShopRange())
             {
-                updateItems();
                 if (hpSlot == -1) return;
                 p.InventoryItems[hpSlot].Cast();
                 hpSlot = -1;
@@ -239,7 +234,7 @@ namespace AutoBuddy
 
         public static void UseBarrier()
         {
-            if (HasBarrier == true && Barrier.IsReady())
+            if (HasBarrier && Barrier.IsReady())
                 Barrier.Cast();
         }
 
