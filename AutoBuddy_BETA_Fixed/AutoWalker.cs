@@ -79,7 +79,6 @@ namespace AutoBuddy
             updateItems();
             oldOrbwalk();
             Game.OnTick += OnTick;
-            Chat.OnMessage += Chat_OnMessage;
             Drawing.OnDraw += Drawing_OnDraw;
         }
 
@@ -113,30 +112,6 @@ namespace AutoBuddy
         }
 
         public static Vector3 Target { get; private set; }
-
-        private static void Chat_OnMessage(AIHeroClient sender, ChatMessageEventArgs args)
-        {
-            //Debug only
-            /*if (sender.IsMe && args.Message.Contains("heal"))
-            {
-                AutoWalker.UseHeal();
-            }
-            if (sender.IsMe && args.Message.Contains("ghost"))
-            {
-                AutoWalker.UseGhost();
-            }
-            if (sender.IsMe && args.Message.Contains("barrier"))
-            {
-                AutoWalker.UseBarrier();
-            }
-            if (sender.IsMe && args.Message.Contains("ignite"))
-            {
-                AutoWalker.UseIgnite();
-            }
-			*/
-
-        }
-
 
         private static void Game_OnUpdate(EventArgs args)
         {

@@ -13,7 +13,6 @@ using EloBuddy.SDK;
 using EloBuddy.SDK.Events;
 using EloBuddy.SDK.Menu;
 using EloBuddy.SDK.Menu.Values;
-using SharpDX;
 using Version = System.Version;
 
 namespace AutoBuddy
@@ -65,15 +64,12 @@ namespace AutoBuddy
             //Creating menu
             menu = MainMenu.AddMenu("AUTOBUDDY", "AB");
             menu.Add("sep1", new Separator(1));
-            CheckBox c =
-                new CheckBox("Call mid, will leave if other player stays on mid(only auto lane)", true);
-            PropertyInfo property2 = typeof(CheckBox).GetProperty("Size");
-            property2.GetSetMethod(true).Invoke(c, new object[] { new Vector2(500, 20) });
-            menu.Add("mid", c);
             Slider s = menu.Add("lane", new Slider(" ", 1, 1, 4));
             string[] lanes =
             {
-                "", "Selected lane: Auto", "Selected lane: Top", "Selected lane: Mid",
+                "", "Selected lane: Auto",
+                "Selected lane: Top",
+                "Selected lane: Mid",
                 "Selected lane: Bot"
             };
             s.DisplayName = lanes[s.CurrentValue];
@@ -105,7 +101,6 @@ namespace AutoBuddy
             menu.Add("disableAutoBuddy", new CheckBox("Disable AutoBuddy Movement. F5 to apply.", false));
             menu.AddSeparator(5);
             CheckBox autoclose = new CheckBox("Auto close lol when the game ends. F5 to apply", false);
-            property2.GetSetMethod(true).Invoke(autoclose, new object[] { new Vector2(500, 20) });
             menu.Add("autoclose", autoclose);
             menu.AddSeparator(5);
             menu.Add("oldWalk", new CheckBox("Use old orbwalking. F5 to apply", false));
@@ -269,30 +264,6 @@ namespace AutoBuddy
                 {"GameRegion", Game.Region},
                 {"GameID", ""+AutoWalker.GameID},
             });
-        }
-
-        private static void createFS()
-        {
-            try
-            {
-                if (!Directory.Exists(SandboxConfig.DataDirectory + "\\AutoBuddy"))
-                {
-                    System.IO.Directory.CreateDirectory(SandboxConfig.DataDirectory + "\\AutoBuddy");
-
-                }
-                if (!Directory.Exists(SandboxConfig.DataDirectory + "\\AutoBuddy\\Builds"))
-                {
-                    System.IO.Directory.CreateDirectory(SandboxConfig.DataDirectory + "\\AutoBuddy\\Builds");
-                }
-                if (!Directory.Exists(SandboxConfig.DataDirectory + "\\AutoBuddy\\Skills"))
-                {
-                    System.IO.Directory.CreateDirectory(SandboxConfig.DataDirectory + "\\AutoBuddy\\Skills");
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("CreateFS Error: '{0}'", e);
-            }
         }
     }
 }
