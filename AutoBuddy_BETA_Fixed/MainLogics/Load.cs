@@ -116,7 +116,7 @@ namespace AutoBuddy.MainLogics
                 Core.DelayAction(SelectLane, RandGen.r.Next(500, 5000));
             }
             else
-                Core.DelayAction(EarlySelectLane, RandGen.r.Next(500, 4000));
+                Core.DelayAction(EarlySelectLane, RandGen.r.Next(500, 5000));
         }
 
         private void Chat_OnMessage(AIHeroClient sender, ChatMessageEventArgs args)

@@ -76,13 +76,13 @@ AutoBuddy won't recall if you have less gold than needed for next item.
                 return;
             }
 
-            //Bot will continue to push even with low hp if he will not find any enemies in the range
+            int criticalRange = 1000;
+                //Bot will continue to push even with low hp if he will not find any enemies in the range
             if (AutoWalker.p.HealthPercent() < 30)
             {
-                AIHeroClient victim = null;
-                victim = EntityManager.Heroes.Enemies.Where(
+                AIHeroClient victim = EntityManager.Heroes.Enemies.Where(
                    vic => !vic.IsZombie &&
-                       vic.Distance(AutoWalker.p) < vic.BoundingRadius + AutoWalker.p.AttackRange + 550 &&
+                       vic.Distance(AutoWalker.p) < criticalRange &&
                        vic.IsVisible() && vic.Health > 0 &&
                        current.localAwareness.MyStrength() / current.localAwareness.HeroStrength(vic) < 1)
                    .OrderBy(v => v.Health)
