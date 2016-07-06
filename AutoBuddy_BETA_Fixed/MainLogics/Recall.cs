@@ -69,7 +69,7 @@ AutoBuddy won't recall if you have less gold than needed for next item.
                 return;
             }
 
-            if (((AutoWalker.p.Gold > flatGold.CurrentValue + AutoWalker.p.Level * goldPerLevel.CurrentValue) && AutoWalker.p.Gold > ShopGlobals.GoldForNextItem && AutoWalker.p.InventoryItems.Length < 8))
+            if (((AutoWalker.p.Gold > flatGold.CurrentValue + AutoWalker.p.Level * goldPerLevel.CurrentValue) && AutoWalker.p.Gold >= ShopGlobals.GoldForNextItem && AutoWalker.p.InventoryItems.Length < 8))
             {
                 current.SetLogic(LogicSelector.MainLogics.RecallLogic);
                 Core.DelayAction(ShouldRecall, RandGen.r.Next(100, 300));
@@ -77,12 +77,12 @@ AutoBuddy won't recall if you have less gold than needed for next item.
             }
 
             int criticalRange = 1000;
-                //Bot will continue to push even with low hp if he will not find any enemies in the range
+                //Bot will continue to push even with low hp if he doesn't find any enemies in the range
             if (AutoWalker.p.HealthPercent() < 30)
             {
                 AIHeroClient victim = EntityManager.Heroes.Enemies.Where(
                    vic => !vic.IsZombie &&
-                       vic.Distance(AutoWalker.p) < criticalRange &&
+                       vic.Distance(AutoWalker.p) <= criticalRange &&
                        vic.IsVisible() && vic.Health > 0 &&
                        current.localAwareness.MyStrength() / current.localAwareness.HeroStrength(vic) < 1)
                    .OrderBy(v => v.Health)

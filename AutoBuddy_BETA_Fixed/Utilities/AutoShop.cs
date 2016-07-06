@@ -145,7 +145,7 @@ namespace AutoBuddy.Utilities
             switch (handle.action)
             {
                 case ShopActionType.Buy:
-                    if (AutoWalker.p.Gold > ShopGlobals.GoldForNextItem)
+                    if (AutoWalker.p.Gold >= ShopGlobals.GoldForNextItem)
                     {
                         Shop.BuyItem(handle.item.Id);
                         ++current;
