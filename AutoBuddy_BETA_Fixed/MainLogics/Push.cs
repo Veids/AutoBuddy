@@ -116,7 +116,7 @@ namespace AutoBuddy.MainLogics
         private void Drawing_OnDraw(EventArgs args)
         {
             Drawing.DrawText(250, 40, Color.Gold,
-                "Push, active: " + active + "  wave num: " + CurrentWaveNum + " minions left: " + currentWave.Length);
+                "Push: " + active + " wave num: " + CurrentWaveNum + " minions left: " + currentWave.Length);
             Circle.Draw(color, 100, currentWave.Length <= 0 ? AutoWalker.p.Position : AvgPos(currentWave));
 
             if (myTurret != null)

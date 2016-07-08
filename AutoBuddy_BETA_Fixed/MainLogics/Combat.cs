@@ -26,7 +26,7 @@ namespace AutoBuddy.MainLogics
         private void Drawing_OnDraw(EventArgs args)
         {
             Drawing.DrawText(250, 25, System.Drawing.Color.Gold,
-                "Combat, active:  " + active + " last mode: " + lastMode);
+                "Combat:  " + active + " last mode: " + lastMode);
         }
 
         public void Activate()
@@ -110,8 +110,6 @@ namespace AutoBuddy.MainLogics
                     if (victim.Health > AutoWalker.p.GetAutoAttackDamage(victim) + 15 ||
                         victim.Distance(AutoWalker.p) > AutoWalker.p.AttackRange + victim.BoundingRadius - 20)
                     {
-
-
                         lastMode = "enemy under turret, ignoring";
                         current.SetLogic(returnTo);
                         return;

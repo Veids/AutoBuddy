@@ -130,7 +130,14 @@ namespace AutoBuddy.Utilities
 
         private void Shopping()
         {
-            if (!enabled.CurrentValue || !order.Any() || !ObjectManager.Player.IsInShopRange() ||
+            if (!enabled.CurrentValue)
+            {
+                ShopGlobals.GoldForNextItem = 99999;
+                Core.DelayAction(Shopping, 300);
+                return;
+            }
+
+            if (!order.Any() || !ObjectManager.Player.IsInShopRange() || !ObjectManager.Player.IsDead ||
                 current >= count)
             {
                 Core.DelayAction(Shopping, 300);
@@ -181,7 +188,7 @@ namespace AutoBuddy.Utilities
                 ShopGlobals.Next = order[current].item.ItemInfo.Name;
             }
 
-            Core.DelayAction(HpPotsController, 150);
+            Core.DelayAction(HpPotsController, RandGen.r.Next(150, 300));
             Core.DelayAction(Shopping, RandGen.r.Next(600, 1000));
         }
 

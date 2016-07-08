@@ -41,9 +41,9 @@ namespace AutoBuddy.Utilities.Pathfinder
         void Chat_OnInput(ChatInputEventArgs args)
         {
             if(test!=null||!args.Input.Equals("/navgraph")) return;
+            Chat.Print("NavGraph enabled...");
             args.Process = false;
             test=new NavGraphTest(this);
-        
         }
 
         public void Save()
@@ -57,8 +57,6 @@ namespace AutoBuddy.Utilities.Pathfinder
                 }
             }
         }
-
-
 
         private void load(string file)
         {
@@ -112,7 +110,6 @@ namespace AutoBuddy.Utilities.Pathfinder
         }
         public void RemoveNode(int node)
         {
-
             while (Nodes[node].Neighbors.Length > 0)
             {
                 RemoveLink(node, Nodes[node].Neighbors[0]);
@@ -293,7 +290,6 @@ namespace AutoBuddy.Utilities.Pathfinder
 
         }
 
-
         private float Distance(PathNode p1, int p2)
         {
             return Nodes[p1.node].position.Distance(Nodes[p2].position);
@@ -303,6 +299,5 @@ namespace AutoBuddy.Utilities.Pathfinder
         {
             return Nodes[p1].position.Distance(Nodes[p2].position);
         }
-
     }
 }

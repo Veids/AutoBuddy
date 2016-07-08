@@ -16,7 +16,6 @@ namespace AutoBuddy.Utilities.AutoLvl
         R = 4
     }
 
-
     internal class CustomLvlSeq
     {
         private readonly bool[] locked;
@@ -50,8 +49,6 @@ namespace AutoBuddy.Utilities.AutoLvl
             profile2 = new CheckBox("Profile 2", false);
             menuSettings.Add(champ.ChampionName + Game.MapId + "p1", profile1);
             menuSettings.Add(champ.ChampionName + Game.MapId + "p2", profile2);
-
-
             
             updater = new CheckBox("Update default sequences");
             clear = new CheckBox("Clear current profile", false);
@@ -87,10 +84,6 @@ namespace AutoBuddy.Utilities.AutoLvl
             def = new DefautSequences(dir + "\\" + "Skills-DEFAULT.txt");
             maxLvl = maxlvl;
             Menu menu = m.AddSubMenu("Skill sequence: " + champ.ChampionName);
-
-
-
-
             
             sliders = new LvlSlider[maxlvl];
             skills = new SkillToLvl[maxlvl];
@@ -104,7 +97,6 @@ namespace AutoBuddy.Utilities.AutoLvl
                 maxTime = humanMax.CurrentValue,
                 minTime = humanMin.CurrentValue
             };
-
         }
 
         void humanMax_OnValueChange(ValueBase<int> sender, ValueBase<int>.ValueChangeArgs args)
@@ -130,9 +122,9 @@ namespace AutoBuddy.Utilities.AutoLvl
             if (locked[0])
             {
                 Core.DelayAction(() => updater.CurrentValue = true, 1);
-
                 return;
             }
+
             if (args.NewValue && !args.OldValue)
             {
                 Core.DelayAction(() => updater.CurrentValue = true, 1);
@@ -152,8 +144,6 @@ namespace AutoBuddy.Utilities.AutoLvl
             }
             Core.DelayAction(unlockButton, 80);
         }
-
-
 
         private void profile1_OnValueChange(ValueBase<bool> sender, ValueBase<bool>.ValueChangeArgs args)
         {
@@ -186,7 +176,6 @@ namespace AutoBuddy.Utilities.AutoLvl
             lvlFile = Path.Combine(dir + "\\" + "Skills-" + champ.ChampionName + "-" + Game.MapId + "-P" + profile + ".txt");
             load(se);
         }
-
 
         private void clear_OnValueChange(ValueBase<bool> sender, ValueBase<bool>.ValueChangeArgs args)
         {
@@ -262,17 +251,14 @@ namespace AutoBuddy.Utilities.AutoLvl
                 }
 
             }
-
-
-
             sa = true;
-
         }
 
         private void load(string seq)
         {
             initSeq(File.Exists(lvlFile) ? File.ReadAllText(lvlFile) : (string.IsNullOrEmpty(seq) ? def.GetDefaultSequence(champ.Hero) : seq));
         }
+
         private void save()
         {
             string s = string.Empty;

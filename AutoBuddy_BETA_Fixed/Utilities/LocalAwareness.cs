@@ -28,7 +28,6 @@ namespace AutoBuddy.Utilities
             lp = new LanePower();
         }
 
-
         public float LocalDomination(Vector3 pos)
         {
             float danger = 0;
@@ -40,16 +39,16 @@ namespace AutoBuddy.Utilities
                 if (h.hero.IsZombie)
                 {
                     danger += (-0.0042857142857143f * (h.hero.Distance(pos) + 100) + 4.4285714285714f) * 15000 *
-(h.hero.IsEnemy ? 1 : -1);
+                    (h.hero.IsEnemy ? 1 : -1);
                 }
-
                 else
                 {
                     danger += (-0.0042857142857143f * (h.hero.Distance(pos) + 100) + 4.4285714285714f) * HeroStrength(h) *
-          (h.hero.IsEnemy ? 1 : -1);
+                    (h.hero.IsEnemy ? 1 : -1);
                 }
 
             }
+
             foreach (
                 Obj_AI_Minion tt in
                     ObjectManager.Get<Obj_AI_Minion>()
@@ -59,9 +58,11 @@ namespace AutoBuddy.Utilities
                     danger += 10000*(tt.IsAlly ? -1 : 1);
                 else if (tt.CombatType==GameObjectCombatType.Ranged)
                     danger += 800 * (tt.IsAlly ? -1 : 2);
-                else if (tt.CombatType == GameObjectCombatType.Ranged && tt.Distance(AutoWalker.p) < 130 + AutoWalker.p.BoundingRadius)
+                else if (tt.CombatType == GameObjectCombatType.Ranged && 
+                         tt.Distance(AutoWalker.p) < 130 + AutoWalker.p.BoundingRadius)
                     danger += 800 * (tt.IsAlly ? -1 : 2);
             }
+
             if (AutoWalker.p.GetNearestTurret().Distance(pos) < 1000 + AutoWalker.p.BoundingRadius) danger += 35000;
             if (AutoWalker.p.GetNearestTurret(false).Distance(pos) < 400) danger -= 35000;
             return danger;

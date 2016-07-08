@@ -14,13 +14,13 @@ namespace AutoBuddy.Utilities.Pathfinder
         private readonly NavGraph navGraph;
         public bool passable = true;
 
-
         public Node(int[] neighbors, Vector3 pos, NavGraph graph)
         {
             navGraph = graph;
             position=pos;
             Neighbors = neighbors;
         }
+
         public Node(Stream f, byte[] b, NavGraph graph)
         {
             navGraph = graph;
@@ -31,6 +31,7 @@ namespace AutoBuddy.Utilities.Pathfinder
                 f.Read(b, 0, 4);
                 Neighbors[i] = BitConverter.ToInt32(b, 0);
             }
+
             position=new Vector3();
             f.Read(b, 0, 4);
             position.X = BitConverter.ToSingle(b, 0);
@@ -38,8 +39,6 @@ namespace AutoBuddy.Utilities.Pathfinder
             position.Y = BitConverter.ToSingle(b, 0);
             f.Read(b, 0, 4);
             position.Z = BitConverter.ToSingle(b, 0);
-
-
         }
 
         public void Serialize(FileStream f)
@@ -66,6 +65,7 @@ namespace AutoBuddy.Utilities.Pathfinder
             Neighbors = tmp;
             Neighbors[Neighbors.Length - 1] = neighbor;
         }
+
         public void RemoveNeighbor(int neighbor)
         {
             int[] tmp = new int[Neighbors.Length - 1];
@@ -76,6 +76,7 @@ namespace AutoBuddy.Utilities.Pathfinder
                 index = i;
                 break;
             }
+
             Array.Copy(Neighbors, 0, tmp, 0, index);
             Array.Copy(Neighbors, index + 1, tmp, index, Neighbors.Length-index-1);
             Neighbors = tmp;
@@ -84,10 +85,9 @@ namespace AutoBuddy.Utilities.Pathfinder
         public void DrawPositions()
         {
             if (position.IsOnScreen())
-            {
                 Circle.Draw(navGraph.NodeColor, 40,2f,  position);
-            }
         }
+
         public void DrawLinks()
         {
             bool onscreen = position.IsOnScreen();

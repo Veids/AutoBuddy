@@ -1,10 +1,6 @@
-﻿using System;
-using System.Reflection;
-using AutoBuddy.Utilities.AutoLvl;
-using EloBuddy;
+﻿using AutoBuddy.Utilities.AutoLvl;
 using EloBuddy.SDK.Menu;
 using EloBuddy.SDK.Menu.Values;
-using SharpDX;
 
 namespace AutoBuddy.Utilities
 {
@@ -22,6 +18,7 @@ namespace AutoBuddy.Utilities
                 s.CurrentValue = (int)value;
             }
         }
+
         public LvlSlider(Menu menu, int level, CustomLvlSeq cus)
         {
             this.level = level;
@@ -41,23 +38,13 @@ namespace AutoBuddy.Utilities
         private void s_OnValueChange(ValueBase<int> sender, ValueBase<int>.ValueChangeArgs args)
         {
 
-            if (args.NewValue!=5&&args.NewValue!=0&&!cus.canLvl((SkillToLvl)args.NewValue, level))
-            {
-
+            if (args.NewValue!=5 && args.NewValue!=0 && !cus.canLvl((SkillToLvl)args.NewValue, level))
                 s.CurrentValue = 0;
-                
-
-            }
             else
             {
                 cus.SetSkill(level, (SkillToLvl)args.NewValue);
                 sender.DisplayName = skills[args.NewValue];
             }
-
-                
-
-            
-
         }
     }
 }

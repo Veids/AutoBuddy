@@ -20,8 +20,6 @@ namespace AutoBuddy.MainLogics
         public readonly Recall recallLogic;
         public readonly Surrender surrender;
         public readonly Survi surviLogic;
-
-
         public readonly IChampLogic myChamp;
         public bool saveMylife;
 
@@ -60,6 +58,7 @@ namespace AutoBuddy.MainLogics
             if (newlogic != MainLogics.PushLogic)
                 pushLogic.Deactivate();
             MainLogics old = current;
+
             switch (current)
             {
                 case MainLogics.SurviLogic:
@@ -74,7 +73,6 @@ namespace AutoBuddy.MainLogics
                     combatLogic.Deactivate();
                     break;
             }
-
 
             switch (newlogic)
             {
@@ -125,6 +123,7 @@ namespace AutoBuddy.MainLogics
                 {"GameID", AutoWalker.GameID},
             });
         }
+
         internal enum MainLogics
         {
             PushLogic,

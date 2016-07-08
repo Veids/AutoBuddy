@@ -12,14 +12,12 @@ namespace AutoBuddy
 
         private static void Game_OnNotify(GameNotifyEventArgs args)
         {
-
             if (args.EventId == GameEventId.OnChampionKill && args.NetworkId == AutoWalker.p.NetworkId&&RandGen.r.Next(10)>5)
                 Player.DoMasteryBadge();
 
             if (args.EventId == GameEventId.OnChampionDoubleKill && args.NetworkId == AutoWalker.p.NetworkId &&
                 RandGen.r.Next(10) > 5)
                 Player.DoEmote(Emote.Laugh);
-
         }
     }
 }

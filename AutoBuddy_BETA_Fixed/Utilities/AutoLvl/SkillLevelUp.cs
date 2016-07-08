@@ -72,6 +72,7 @@ namespace AutoBuddy.Utilities.AutoLvl
                             break;
                     }
                 }
+
                 if (r.Level < rDesired)
                     ObjectManager.Player.Spellbook.LevelSpell(SpellSlot.R);
                 if (q.Level < qDesired)

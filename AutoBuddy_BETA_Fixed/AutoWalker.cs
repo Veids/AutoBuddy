@@ -89,7 +89,6 @@ namespace AutoBuddy
 
         private static void OnEndGame()
         {
-
             if (MyNexus != null && EneMyNexus != null && (MyNexus.Health > 1) && (EneMyNexus.Health > 1))
             {
                 Core.DelayAction(OnEndGame, 5000);
@@ -100,15 +99,7 @@ namespace AutoBuddy
                 EndGame(null, new EventArgs());
 
             if (MainMenu.GetMenu("AB").Get<CheckBox>("autoclose").CurrentValue)
-                Core.DelayAction(() =>
-                {
-                    /* foreach (Process process in Process.GetProcessesByName("League of Legends"))
-                     {
-                         process.CloseMainWindow();
-                     } */     
-                      Game.QuitGame(); // new close game from API 6.5       
-
-                }, 14000);
+                Core.DelayAction(() =>{ Game.QuitGame(); }, 10000);
         }
 
         public static Vector3 Target { get; private set; }

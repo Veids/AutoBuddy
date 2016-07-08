@@ -36,13 +36,10 @@ namespace AutoBuddy.Utilities.Pathfinder
             zoom.CurrentValue = (int)Camera.ZoomDistance;
             zoom.OnValueChange += zoom_OnValueChange;
             Chat.OnInput += Chat_OnInput;
-            
-            
         }
 
         void Game_OnTick(EventArgs args)
         {
-
             if (p.Count == 0) Game.OnTick -= Game_OnTick;
             Player.IssueOrder(GameObjectOrder.MoveTo, p[0], true);
             if(ObjectManager.Player.Distance(p[0])<400)
@@ -61,50 +58,48 @@ namespace AutoBuddy.Utilities.Pathfinder
                 args.Process = false;
                 p = navGraph.FindPath2(ObjectManager.Player.Position, Game.CursorPos);
             }
-            if (args.Input.Equals("/ng walk"))
+            else if (args.Input.Equals("/ng walk"))
             {
                 args.Process = false;
                 p = navGraph.FindPath2(ObjectManager.Player.Position, Game.CursorPos);
                 Game.OnTick += Game_OnTick;
             }
-            if (args.Input.Equals("/ng save"))
+            else if (args.Input.Equals("/ng safe"))
             {
                 args.Process = false;
                 navGraph.Save();
             }
-            if (args.Input.Equals("/ng load"))
+            else if (args.Input.Equals("/ng load"))
             {
                 args.Process = false;
                 selectedNode = -1;
                 p = new List<Vector3>();
                 navGraph.Load();
             }
-            if (args.Input.Equals("/ng clear"))
+            else if (args.Input.Equals("/ng clear"))
             {
                 args.Process = false;
                 navGraph.Nodes=new Node[0];
                 p = new List<Vector3>();
                 selectedNode = -1;
             }
-            if (args.Input.Equals("/ng show"))
+            else if (args.Input.Equals("/ng show"))
             {
                 args.Process = false;
                 if(drawon) return;
                 Drawing.OnDraw += Drawing_OnDraw;
                 drawon = true;
             }
-            if (args.Input.Equals("/ng hide"))
+            else if (args.Input.Equals("/ng hide"))
             {
                 args.Process = false;
                 Drawing.OnDraw-=Drawing_OnDraw;
                 drawon = false;
             }
-
         }
 
         void Drawing_OnDraw(EventArgs args)
         {
-            
             if(selectedNode>=0)
                 Circle.Draw(new ColorBGRA(255, 0, 0, 255), 100, navGraph.Nodes[selectedNode].position);
             navGraph.Draw();
@@ -138,7 +133,6 @@ namespace AutoBuddy.Utilities.Pathfinder
                 navGraph.AddLink(selectedNode, closestNodeId);
                 selectedNode = closestNodeId;
             }
-
         }
 
         void addSelectNode_OnValueChange(ValueBase<bool> sender, ValueBase<bool>.ValueChangeArgs args)
@@ -153,7 +147,5 @@ namespace AutoBuddy.Utilities.Pathfinder
             else
                 selectedNode = closestNodeId;
         }
-
-
     }
 }

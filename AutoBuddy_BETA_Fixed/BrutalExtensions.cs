@@ -15,7 +15,7 @@ namespace AutoBuddy
 {
     internal static class BrutalExtensions
     {
-        
+
         //This was causing AutoBuddy to not load in Medium bot games :/
         //public static string GetGameType()
         //{
@@ -29,7 +29,6 @@ namespace AutoBuddy
         //    }
         //    return "normal";
         //}
-
 
         public static string GetGameType()
         {
