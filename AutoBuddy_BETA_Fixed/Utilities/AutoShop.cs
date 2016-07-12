@@ -32,7 +32,7 @@ namespace AutoBuddy.Utilities
 
         private readonly string buildFile;
         private readonly string internalBuild;
-        private readonly List<ItemAction> order;
+        private readonly List<ItemAction> order = new List<ItemAction>();
         private static int current;
         private static int count;
         private static bool hppots;
@@ -43,8 +43,6 @@ namespace AutoBuddy.Utilities
             buildFile = Path.Combine(SandboxConfig.DataDirectory + "AutoBuddy\\Builds\\" +
                AutoWalker.p.ChampionName + "-" + Game.MapId + ".txt");
             internalBuild = build;
-            order = new List<ItemAction>();
-            current = 0;
 
             CreateMenu();
             LoadBuild();
@@ -211,6 +209,8 @@ namespace AutoBuddy.Utilities
             menu.Add("eeewgrververv", l);
             menu.Add(AutoWalker.p.ChampionName + "enabled", enabled);
         }
+
+        public static bool InOrder { get { return current < count; }}
 
         private struct ItemAction
         {

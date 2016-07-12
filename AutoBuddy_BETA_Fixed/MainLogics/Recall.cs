@@ -50,26 +50,15 @@ AutoBuddy won't recall if you have less gold than needed for next item.
                 Drawing.OnDraw += Drawing_OnDraw;
         }
 
-
         private void ShouldRecall()
         {
-            if (active)
-            {
-                Core.DelayAction(ShouldRecall, 500);
-                return;
-            }
-            if (current.current == LogicSelector.MainLogics.CombatLogic)
-            {
-                Core.DelayAction(ShouldRecall, 500);
-                return;
-            }
-            if (AutoWalker.p.IsDead)
+            if (active || current.current == LogicSelector.MainLogics.CombatLogic || AutoWalker.p.IsDead)
             {
                 Core.DelayAction(ShouldRecall, 500);
                 return;
             }
 
-            if (((AutoWalker.p.Gold > flatGold.CurrentValue + AutoWalker.p.Level * goldPerLevel.CurrentValue) && AutoWalker.p.Gold >= ShopGlobals.GoldForNextItem && AutoWalker.p.InventoryItems.Length < 8))
+            if ((AutoWalker.p.Gold > flatGold.CurrentValue + AutoWalker.p.Level * goldPerLevel.CurrentValue) && AutoShop.InOrder && AutoWalker.p.Gold >= ShopGlobals.GoldForNextItem)
             {
                 current.SetLogic(LogicSelector.MainLogics.RecallLogic);
                 Core.DelayAction(ShouldRecall, RandGen.r.Next(100, 300));
@@ -84,7 +73,7 @@ AutoBuddy won't recall if you have less gold than needed for next item.
                    vic => !vic.IsZombie &&
                        vic.Distance(AutoWalker.p) <= criticalRange &&
                        vic.IsVisible() && vic.Health > 0 &&
-                       current.localAwareness.MyStrength() / current.localAwareness.HeroStrength(vic) < 1)
+                       current.localAwareness.MyStrength() / current.localAwareness.HeroStrength(vic) <= 1)
                    .OrderBy(v => v.Health)
                    .FirstOrDefault();
 
@@ -123,6 +112,7 @@ AutoBuddy won't recall if you have less gold than needed for next item.
         private void Game_OnTick(EventArgs args)
         {
             AutoWalker.SetMode(Orbwalker.ActiveModes.Combo);
+
             if (ObjectManager.Player.Distance(spawn) < 400 && ObjectManager.Player.HealthPercent() > 85 &&
                 (ObjectManager.Player.ManaPercent > 80 || ObjectManager.Player.PARRegenRate <= .0001))
 
@@ -167,6 +157,7 @@ AutoBuddy won't recall if you have less gold than needed for next item.
             if (ObjectManager.Player.Distance(spawn) < 500) return;
             Core.DelayAction(CastRecall2, 300);
         }
+
         private void CastRecall2()//Kappa
         {
             if (ObjectManager.Player.Distance(spawn) < 500)
